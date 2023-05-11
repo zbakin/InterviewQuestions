@@ -21,18 +21,23 @@ struct node_t
 };
 
 node_t* even_nodes(node_t** head) {
-    // if empty head
     if(head == nullptr) return *head;
-    node_t* even_n = *head;
-    // while first even is not found, set even_n to even_n->next
-    while(even_n->v % 2 != 0 && even_n->next != nullptr) {
-        even_n = even_n->next;
+    node_t* even_n = new node_t;
+    node_t* curr_original = *head;
+    node_t* curr_even = even_n;
+    if(curr_original->v % 2 == 0) {
+        even_n->v = curr_original->v;
+    } else {
+        curr_even = curr
     }
-    node_t* curr = even_n;
-    while(curr->next != nullptr) {
-        if(curr->next->v % 2 == 1) {
-            curr = curr->next->next;
+    while(curr_original->next != nullptr) {
+        if(curr_original->next->v % 2 == 0) {
+            node_t *nn = new node_t;
+            nn->v = curr_original->next->v;
+            curr_even->next = nn;
+            curr_even = curr_even->next;
         }
+        curr_original = curr_original->next;
     }
     return even_n;
 }
@@ -43,7 +48,7 @@ int main() {
     node_t *head = new node_t;
     node_t *curr = head;
     curr->v = 1;
-    for(int i = 0; i < 4; i++) {
+    for(int i = 0; i < 2; i++) {
         node_t *nn = new node_t;
         nn->v = 2;
         curr->next = nn;
@@ -51,7 +56,17 @@ int main() {
     }
     node_t *nn = new node_t;
     nn->v = 3;
-
+    curr->next = nn;
+    curr = curr->next;
+    
+    nn = new node_t;
+    nn->v = 2;
+    curr->next = nn;
+    curr = curr->next;
+//    while(head != nullptr) {
+//        cout << head->v << endl;
+//        head = head->next;
+//    }
     node_t* nodes = even_nodes(&head);
     while(nodes != nullptr) {
         cout << nodes->v << endl;
