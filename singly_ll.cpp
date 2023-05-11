@@ -20,27 +20,32 @@ struct node_t
     struct node_t* next = nullptr;
 };
 
-node_t* even_nodes(node_t** head) {
-    if(head == nullptr) return *head;
-    node_t* even_n = new node_t;
-    node_t* curr_original = *head;
-    node_t* curr_even = even_n;
-    if(curr_original->v % 2 == 0) {
-        even_n->v = curr_original->v;
-    } else {
-        curr_even = curr
-    }
-    while(curr_original->next != nullptr) {
-        if(curr_original->next->v % 2 == 0) {
-            node_t *nn = new node_t;
-            nn->v = curr_original->next->v;
-            curr_even->next = nn;
-            curr_even = curr_even->next;
+node_t* even_nodes(struct node_t** head_ptr) {
+    node_t *curr = *head_ptr; // original list iterator
+    node_t *even_head = nullptr; // head of even values list
+    node_t *even_it = nullptr; // iterator of even values list
+
+    while (curr != nullptr) {
+        if (curr->v % 2 == 0) {
+            if (even_it == nullptr) { // add first even node
+                even_head = curr;
+                even_it = curr;
+            } else { // if we have at least 1 node in new list, append even value
+                even_it->next = curr;
+                even_it = even_it->next;
+            }
+            // remove current node from original list(move pointer to next and pointer to next set to nullptr)
+            *head_ptr = curr->next;
+            curr->next = nullptr;
+            curr = *head_ptr;
+        } else { // if odd, just move to next node
+            head_ptr = &curr->next; // move head_ptr to next node
+            curr = curr->next;
         }
-        curr_original = curr_original->next;
     }
-    return even_n;
+    return even_head;
 }
+
 
 
 int main() {
@@ -63,14 +68,16 @@ int main() {
     nn->v = 2;
     curr->next = nn;
     curr = curr->next;
-//    while(head != nullptr) {
-//        cout << head->v << endl;
-//        head = head->next;
-//    }
-    node_t* nodes = even_nodes(&head);
-    while(nodes != nullptr) {
-        cout << nodes->v << endl;
-        nodes = nodes->next;
+
+    node_t* even_list = even_nodes(&head);
+    while(even_list != nullptr) {
+        cout << even_list->v << endl;
+        even_list = even_list->next;
+    }
+    
+    while(head != nullptr) {
+        cout << head->v << endl;
+        head = head->next;
     }
     return 0;
 }
