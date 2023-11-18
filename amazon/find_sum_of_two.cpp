@@ -26,5 +26,7 @@ int main() {
     std::vector<size_t> vec3 = {0};
     assert(!find_sum_of_two(vec3, 0));
 
+    std::vector<size_t> vec4 = {1, 1};
+    assert(find_sum_of_two(vec4, 2));
     return 0;
 }
